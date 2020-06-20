@@ -11,7 +11,7 @@ The entered data is saved via indexedDB.
 The optional password is saved via localstorage.
 
 ## Data encryption and hashing
-Optional password can be set to protect app access and to encrypt saved contact data (using crypto-js).
+Optional password can be set to protect app access and to encrypt saved data (using crypto-js).
 When setting a password, data is encrypted using AES, password is hashed via SHA256.
 With no individual password the contact data is encrypted with a default password.
 
