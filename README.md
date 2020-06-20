@@ -13,7 +13,7 @@ The optional password is saved via localstorage.
 ## Data encryption and hashing
 Optional password can be set to protect app access and to encrypt saved data (using crypto-js).
 When setting a password, data is encrypted using AES, password is hashed via SHA256.
-With no individual password the contact data is encrypted with a default password.
+With no individual password the data is encrypted with a default password.
 
 ## Used Libs
 - [crypto-js](https://github.com/brix/crypto-js) under [The MIT License](https://github.com/brix/crypto-js/blob/develop/LICENSE)
