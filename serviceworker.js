@@ -1,9 +1,9 @@
 //########################################
 // serviceworker for Schmerzlog
-// Version: 21.06.2020 16:45
+// Version: 09.08.2020 18:35 
 //########################################
 
-var cacheName = 'schmerzlog_20_06_21_16_45';
+var cacheName = 'schmerzlog_20_08_9_18_35';
 var urlsToCache = [
 	'/',
 	'/index.htm',
@@ -13,6 +13,7 @@ var urlsToCache = [
 	'/icon_144.png',
 	'/icon_192.png',
 	'/icon_512.png',
+	'/icon_maskable.png',
 	'/manifest.json'
 ];
 
