@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
-<head> 
+<head>
 <!-- general  -->
 <title>Schmerzlog</title>
 <meta name="robots" content="noindex,nofollow" />
@@ -49,18 +49,18 @@ body				{padding:0px; margin:0px; background:#cccccc; color:#333333; font-family
 .content a			{color:#333333}
 
 /* table items start page */
-.content #slogitems table			{padding:0px; margin:10px auto; border-collapse:collapse; background:#cccccc; font-weight:bold; font-size:16px; width:95%; border-bottom: 1px solid #cccccc;}
-.content #slogitems table th		{padding:3px 10px 3px 15px; background:#666666; color:#eeeeee; border: none;}
+.content #slogitems table			{padding:0px; margin:10px auto; margin-bottom:20px; border-collapse:collapse; background:#cccccc; font-weight:bold; font-size:16px; width:93%; border-bottom: 1px solid #cccccc;}
+.content #slogitems table th		{padding:3px 10px 3px 15px; background:#666666; color:#eeeeee; border: none; font-weight:normal;}
 
-.content #slogitems table th:first-child						{border-top-left-radius: 10px;}
-.content #slogitems table th:last-child							{border-top-right-radius: 10px;}
-.content #slogitems table tr:last-child td:first-child			{border-bottom-left-radius: 10px;}
-.content #slogitems table tr:nth-last-child(2) td:last-child	{border-bottom-right-radius: 10px;}
+.content #slogitems table th:first-child						{border-top-left-radius: 5px;}
+.content #slogitems table th:last-child							{border-top-right-radius: 5px;}
+.content #slogitems table tr:last-child td:first-child			{border-bottom-left-radius: 5px;}
+.content #slogitems table tr:nth-last-child(2) td:last-child	{border-bottom-right-radius: 5px;}
 
 .content #slogitems table td				{padding:5px 10px 0px 15px; background: none; border-top: 1px solid #999999}
-.content #slogitems table th button			{padding:6px 8px 4px 8px; margin:4px 10px 4px 0px; color:#eeeeee; background:#333333; font-weight:bold; font-size:16px; border:1px solid #eeeeee;}
+.content #slogitems table th button			{padding:6px 8px 4px 8px; margin:4px 10px 4px 0px; color:#eeeeee; background:#333333; font-weight:normal; font-size:16px; border:1px solid #eeeeee;}
 .content #slogitems table th.mright button 	{padding:0px;margin:0px 10px 0px 0px;font-size:28px; background:none; border:none}
-.content #slogitems table td button			{padding:0px 5px 0px 0px; margin:0px; color:#333333; background: none; font-weight:bold; font-size:42px; border: none}
+.content #slogitems table td button			{padding:0px 10px 0px 0px; margin:0px; color:#333333; background:none; font-weight:normal; font-size:28px; border:none}
 .content #slogitems table .mright	{text-align: right;}
 .content #slogitems table .mleft	{text-align: left;}
 .content #slogitems table .comment	{padding:0px 10px 5px 15px; font-size:14px; background:none; border-top: none; font-weight:normal;}
@@ -141,6 +141,7 @@ p.footer a			{color:#333333}
 // 21.06.2020	0.2alpha        fix delete day bug (decrypt day ID)
 // 09.08.2020	0.3alpha        add maskable icon
 // 13.09.2020	0.4alpha        add app shortcut for New Entry
+// 18.06.2021	0.5alpha		fix ios14.6 indexDB problem, no timeoffset for ios14.6
 //##########################################################
 // based on: https://www.cjpj.de/appshell.htm
 // Simple App Shell, (c) 2020 webapps@cjpj, P. Janko
@@ -156,8 +157,8 @@ p.footer a			{color:#333333}
 
 //##########################################################
 //basic global vars
-var appVersion = "0.4alpha";
-var appRelease = "13.09.2020";
+var appVersion = "0.5alpha";
+var appRelease = "18.06.2021";
 //global array with all pages
 var appPages = new Array();
 var maxNofItems = 500; 			//set max number of items
@@ -199,9 +200,10 @@ var msgP01 = "Passwort erfolgreich gespeichert!";
 var msgP02 = "Ungültiges Passwort!\nBitte gültiges Passwort eingeben!\nZwischen 4 und 20 Zeichen,\nnur Buchstaben und Zahlen\nkeine Sonderzeichen, keine Umlaute";
 var msgP03 = "Passwörter stimmen nicht überein!\nBitte erneut versuchen.";
 var msgP04 = "Achtung!\n\nDer Browser untersützt keine Datenspeicherung.\nVerwendung nicht möglich (no localstorage)!";
-var msgP05 = "Falsches altes Passwort.\nBitte erneut versuchen!";
+var msgP05 = "Falsches Passwort.\nBitte erneut versuchen!";
 var msgP06 = "Passwortschutz wirklich entfernen?";
 var msgP07 = "Passwortschutz wurde erfolgreich entfernt!";
+var msgP08 = "\nBitte zuerst ALTES Passwort eingeben!";
 //status messages
 var msgS01 = "Verbunden";
 var msgS02 = "Getrennt";
@@ -342,7 +344,13 @@ function createIndexedDB() {
 		alert(msg08);
 		return;
 	} else {
-		var requestDB = window.indexedDB.open("slogDB", 1);
+
+	//############### workaround ios indexdb problem
+	var dbiosWA = window.indexedDB;
+	setTimeout(() => {
+	//##############################################
+
+		var requestDB = dbiosWA.open("slogDB", 1);		//var requestDB = window.indexedDB.open("slogDB", 1);
 		//error
 		requestDB.onerror = function(err) {
 			//console.log("Error DB: " + err.target.errorCode);
@@ -367,6 +375,9 @@ function createIndexedDB() {
 			//update startpage
 			refreshStartPage();
 		};
+	//############### workaround ios indexdb problem
+	}, 500);
+	//##############################################
 
 	}
 }
@@ -594,8 +605,8 @@ function makeVisualTime(dateobj) {
 	//get time (hours and mins) from date object
 	var mikHours = dateobj.getHours();
 	var mikMins = dateobj.getMinutes();
-	//set different time for ios regarding time zone
-	if ((navigator.userAgent.toLowerCase().indexOf("iphone") !== -1) || (navigator.userAgent.toLowerCase().indexOf("ipad") !== -1) || (navigator.userAgent.toLowerCase().indexOf("ipod") !== -1)) {
+	//set different time for ios 12..., NOT for IOS 14.6 anymore
+	if (((navigator.userAgent.toLowerCase().indexOf("iphone") !== -1) || (navigator.userAgent.toLowerCase().indexOf("ipad") !== -1) || (navigator.userAgent.toLowerCase().indexOf("ipod") !== -1)) && (navigator.userAgent.toLowerCase().indexOf("os 12_") !== -1)) {
 		mikHours = mikHours+((dateobj.getTimezoneOffset())/60);
  	}
 	//always show two digit values for hours and mins and day
@@ -761,7 +772,7 @@ function changePassword(pwID1,pwID2,pwform) {
 	//check for pw rules first (do not forward spec.chars to CryptoJS)
 	var oldPW = document.getElementById("oldpw");
 	if ((oldPW.value === "") || (oldPW.value.length < pwMin) || (oldPW.value.length > pwMax) || (!(reCheckPW.test(oldPW.value)))) {
-		alert(msgP05);
+		alert(msgP05 + msgP08);
 		oldPW.focus();
 	} else {
 		//check for matching old pw
@@ -770,7 +781,7 @@ function changePassword(pwID1,pwID2,pwform) {
 			//check new passwords
 			setPassword(pwID1,pwID2,pwform);
 		} else {
-			alert(msgP05);
+			alert(msgP05 + msgP08);
 			oldPW.focus();
 		}
 	}
@@ -807,7 +818,7 @@ function removePassword() {
 	//check for pw rules first (do not forward spec.chars to CryptoJS)
 	var oldPW = document.getElementById("oldpw");
 	if ((oldPW.value === "") || (oldPW.value.length < pwMin) || (oldPW.value.length > pwMax) || (!(reCheckPW.test(oldPW.value)))) {
-		alert(msgP05);
+		alert(msgP05 + msgP08);
 		oldPW.focus();
 	} else {
 		//check for matching old pw
@@ -822,7 +833,7 @@ function removePassword() {
 				reencryptData(cryptoPW,defaultPW,"remove");
 			}
 		} else {
-			alert(msgP05);
+			alert(msgP05 + msgP08);
 			oldPW.focus();
 		}
 	}
