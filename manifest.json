@@ -13,6 +13,11 @@
 			"type": "image/png"
 		},
 		{
+			"src": "icon_196.png",
+			"sizes": "196x196",
+			"type": "image/png"
+		},
+		{
 			"src": "icon_512.png",
 			"sizes": "512x512",
 			"type": "image/png"
@@ -38,6 +43,20 @@
 	"display": "standalone",
 	"background_color": "#CCCCCC",
 	"theme_color": "#CCCCCC",
-	"description": "Schmerzlog dient zur mobilen Erstellung eines einfachen Schmerztagebuchs",
-	"orientation": "any"
+	"orientation": "any",
+	"description": "Schmerzlog - Einfaches Schmerztagebuch",
+	"screenshots": [
+		{
+			"src": "screenshot1.png",
+			"type": "image/png",
+			"sizes": "360x720",
+			"form_factor": "narrow"
+		},
+		{
+			"src": "screenshot2.png",
+			"type": "image/png",
+			"sizes": "720x360",
+			"form_factor": "wide"
+		}
+	]
 }

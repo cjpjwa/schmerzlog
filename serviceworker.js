@@ -1,20 +1,23 @@
 //########################################
 // serviceworker for Schmerzlog
-// Version: 23.10.2023 16:35
+// Version: 04.01.2025 16:35
 //########################################
 
-var cacheName = 'schmerzlog_23_10_26_16_35';
+var cacheName = 'schmerzlog_25_01_04_16_35';
 var urlsToCache = [
 	'/',
 	'/index.htm',
-	'/crypto-js.js',
 	'/apple-touch-icon.png',
 	'/favicon.ico',
 	'/icon_144.png',
 	'/icon_192.png',
+	'/icon_196.png',	
 	'/icon_512.png',
 	'/icon_maskable.png',
-	'/icon_192_new.png',	
+	'/icon_192_new.png',
+	'/screenshot1.png',
+	'/screenshot2.png',
+	'/crypto-js.js',
 	'/manifest.json'
 ];
 
